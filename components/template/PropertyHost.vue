@@ -1,0 +1,36 @@
+<template>
+  <div class="app-background-grey">
+    <div class="app-wrapper app-padded-vertical">
+      <div class="app-host-header">
+        <div><img :src="user.image"></div>
+        <div>
+          <div class="app-host-name">{{ user.name}}</div>
+          <div class="app-host-name">Joined in {{ formatDate(user.joined) }}</div>
+          <div class="app-flex">
+            <div class="app-host-review"> {{ user.viewCount }} reviews </div>
+          </div>
+        </div>
+      </div>
+      <div class="app-host-description">{{ user.description }}</div>
+    </div>
+  </div>
+</template>
+
+<script>
+import formatDate from '~/utils/formatDate'
+export default {
+  props: {
+    user: {
+      type: Object,
+      required: true
+    }
+  },
+  methods: {
+    formatDate
+  },
+}
+</script>
+
+<style>
+
+</style>
