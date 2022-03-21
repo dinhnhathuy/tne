@@ -1,6 +1,13 @@
-export default function(context, inject) {
-    const appKey = 'UI5SR2OEXF'
-    const apikey = '6bb9fe7a929107fbd7335e9266c5a06e'
+import {
+  unWrap,
+  getErrorResponse
+} from "~/utils/fetchUtils"
+
+export default function ({
+  $config
+}, inject, ) {
+  const appKey = $config.algolia.appId
+  const apikey = $config.algolia.key
     const headers = {
         'X-Algolia-Application-Id': appKey,
         'X-Algolia-API-Key': apikey
@@ -17,27 +24,6 @@ export default function(context, inject) {
             getErrorResponse(error)
         }
     }
-
-    const unWrap = async (response) => {
-        const json = await response.json()
-        const { ok, status, statusText } = response
-        return {
-            json,
-            ok,
-            status,
-            statusText
-        }
-    }
-
-    const getErrorResponse = (error) => {
-        return {
-            ok: false,
-            status: 500,
-            statusText: error.message,
-            json: {}
-        }
-    }
-
     const getReviewByHomeId = async (homeId) => {
         try {
             const reviews = await unWrap(await fetch(`https://${appKey}-1.algolia.net/1/indexes/reviews/query`, { 

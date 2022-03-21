@@ -13,9 +13,12 @@
                 </button>
             </div>
             <div class="app-user-menu">
-                <img src="/images/icons/house.svg">
-                <div class="name">Host</div>
-                <img src="/iamges/user.jpg" class="avatar">
+                <template v-if="isLoggedIn">
+                    <img src="/images/icons/house.svg">
+                    <div class="name">Host</div>    
+                    <img :src="user.profileUrl" class="avatar">
+                </template>
+                <div v-show="!isLoggedIn" id="gs2" class="ml-8"></div>
             </div>
         </header>
         <nuxt/>
@@ -23,7 +26,14 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 export default {
+    computed: {
+        ...mapGetters({
+            isLoggedIn: 'auth/isLoggedIn',
+            user: 'auth/user'
+        })
+    },
     mounted() {
         this.$maps.makeAutoComplete(this.$refs.citySearch)
     },
@@ -40,6 +50,6 @@ export default {
                 }
             })
         }
-    },
+    }
 }
 </script>
