@@ -52,7 +52,7 @@ export default {
     '@nuxtjs/axios',
     '@nuxt/content',
     '~/modules/auth.js',
-    '~/modules/algolia.js',
+    '~/modules/algolia',
   ],
 
   axios: {
