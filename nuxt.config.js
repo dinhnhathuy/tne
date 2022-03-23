@@ -51,9 +51,15 @@ export default {
   modules: [
     '@nuxtjs/axios',
     '@nuxt/content',
+    '@nuxtjs/cloudinary',
     '~/modules/auth.js',
     '~/modules/algolia',
+    '~/modules/cloudinary',
   ],
+
+  cloudinary: {
+    cloudName: process.env.CLOUDINARY_CLOUD_NAME,
+  },
 
   axios: {
     baseURL: '/',
@@ -72,6 +78,9 @@ export default {
       algolia: {
         appId: process.env.ALGOLIA_APP_ID,
         key: process.env.ALGOLIA_API_KEY
+      },
+      cloudinary: {
+        apiKey: process.env.CLOUDINARY_API_KEY,
       }
     },
     privateRuntimeConfig: {
@@ -79,6 +88,9 @@ export default {
           appId: process.env.ALGOLIA_APP_ID,
           key: process.env.ALGOLIA_ADMIN_API_KEY
         },
+        coudinary: {
+          apiSecret: process.env.CLOUDINARY_API_SECRET,
+        }
       },
     serverMiddleware: [],
 }
