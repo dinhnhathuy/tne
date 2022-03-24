@@ -1,9 +1,9 @@
 <template>
     <div class="app">
         <header class="app-header">
-            <div class="app-logo">
+            <NuxtLink to='/' class="app-logo">
                 <img src="/images/logo.svg">
-            </div>
+            </NuxtLink>
             <div class="app-search">
                 <input ref="citySearch" type="text" placeholder="Enter your address" @changed="changed" >
                 <input type="text" class="datepicker" placeholder="Check in">
@@ -15,7 +15,7 @@
             <div class="app-user-menu">
                 <template v-if="isLoggedIn">
                     <img src="/images/icons/house.svg">
-                    <div class="name">Host</div>    
+                    <NuxtLink to="/admin" class="name">Host</NuxtLink>    
                     <img :src="user.profileUrl" class="avatar">
                 </template>
                 <div v-show="!isLoggedIn" id="gs2" class="ml-8"></div>

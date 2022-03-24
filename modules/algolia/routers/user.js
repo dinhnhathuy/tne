@@ -4,7 +4,7 @@ export default (apis) => {
 
   return async function getUserRoute(req, res, next) {
     const identity = req.identity
-    const userData = apis.user && await apis.user.betById(identity)
+    const userData = apis.user && await apis.user.getById(identity)
 
     if (userData.status === 200) {
       sendJSON(userData.json, res)

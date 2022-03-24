@@ -1,14 +1,14 @@
 <template>
   <div>[LIST OF HOMES]
+    <span v-for="(userHome, index) in homeList" :key="index">{{ userHome }} </span>
     <h2 class="text-xl font-bold">Add a home </h2>
     <form class="form" @submit.prevent="onSubmit()">
-      <TemplateUploadImage></TemplateUploadImage>
       images: <br>
-      <input v-model="home.images[0]" type="text" class="w-3/4"><br>
-      <input v-model="home.images[1]" type="text" class="w-3/4"><br>
-      <input v-model="home.images[2]" type="text" class="w-3/4"><br>
-      <input v-model="home.images[3]" type="text" class="w-3/4"><br>
-      <input v-model="home.images[4]" type="text" class="w-3/4"><br>
+      <TemplateUploadImage @file-uploaded="fileUploaded($event, 0)"></TemplateUploadImage>
+      <TemplateUploadImage @file-uploaded="fileUploaded($event, 1)"></TemplateUploadImage>
+      <TemplateUploadImage @file-uploaded="fileUploaded($event, 2)"></TemplateUploadImage>
+      <TemplateUploadImage @file-uploaded="fileUploaded($event, 3)"></TemplateUploadImage>
+      <TemplateUploadImage @file-uploaded="fileUploaded($event, 4)"></TemplateUploadImage>
       Title: <br>
       <input v-model="home.title" type="text" class="w-60"> <br>
       Description: <br>
@@ -47,9 +47,11 @@
 </template>
 
 <script>
+import { unWrap } from '~/utils/fetchUtils'
 export default {
   data() {
     return {
+      homeList: [],
       home: {
         title: '',
         description: '',
@@ -72,19 +74,21 @@ export default {
           lng: 26.1
         },
          images: [
-          'https://images.unsplash.com/photo-1542718610-a1d656d1884c?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1950&q=80',
-          'https://images.unsplash.com/photo-1542718610-a1d656d1884c?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1950&q=81',
-          'https://images.unsplash.com/photo-1542718610-a1d656d1884c?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1950&q=82',
-          'https://images.unsplash.com/photo-1542718610-a1d656d1884c?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1950&q=83',
-          'https://images.unsplash.com/photo-1542718610-a1d656d1884c?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1950&q=84'
         ]
       }
     }
   },
   mounted() {
     this.$maps.makeAutoComplete(this.$refs.locationSelector, ['address'])
+    this.fetchHomeList()
   },
   methods: {
+    async fetchHomeList() {
+      this.homeList = (await unWrap(await fetch('/api/homes/user'))).json
+    },
+    fileUploaded(fileUrl, index) {
+      this.home.images[index] = fileUrl
+    },
     changed(event) {
       const addressParts = event.detail.address_components
       const street = this.getAddressParts(addressParts, 'street_number')?.short_name || ''

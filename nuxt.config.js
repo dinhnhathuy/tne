@@ -59,6 +59,7 @@ export default {
 
   cloudinary: {
     cloudName: process.env.CLOUDINARY_CLOUD_NAME,
+    apiKey: process.env.CLOUDINARY_API_KEY,
   },
 
   axios: {
@@ -81,6 +82,7 @@ export default {
       },
       cloudinary: {
         apiKey: process.env.CLOUDINARY_API_KEY,
+        cloudName: process.env.CLOUDINARY_CLOUD_NAME,
       }
     },
     privateRuntimeConfig: {
@@ -88,7 +90,7 @@ export default {
           appId: process.env.ALGOLIA_APP_ID,
           key: process.env.ALGOLIA_ADMIN_API_KEY
         },
-        coudinary: {
+        cloudinary: {
           apiSecret: process.env.CLOUDINARY_API_SECRET,
         }
       },

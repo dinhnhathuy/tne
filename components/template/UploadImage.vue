@@ -26,9 +26,21 @@ export default {
       }))
 
       const signature = response.json.signature
-      console.log(signature)
-      // const formData = new FormData();
-      // formData.append('file', file);
+      const readData = (fileObj) => new Promise((resolve) => {
+        const reader = new FileReader();
+        reader.onloadend = () => resolve(reader.result);
+        reader.readAsDataURL(fileObj);
+      })
+      
+      const data = await readData(file)
+      const asset = await this.$cloudinary.upload(data, {
+        ...options,
+        apiKey: this.$config.cloudinary.apiKey,
+        cloud_name: this.$config.cloudinary.cloudName,
+        signature
+      })
+
+      this.$emit('file-uploaded', asset.secure_url)
     }
   }
 }

@@ -5,6 +5,12 @@ import { unWrap, getErrorResponse } from '../../../utils/fetchUtils'
 export default (algoliaConfig) => {
   const headers = getHeaders(algoliaConfig)
   return {
+    async assignHome(identity, homeId){
+      const payload = (await this.getById(identity)).json
+      payload.homeId.push(homeId)
+      this.create(identity, payload)
+    },
+
     create: async (identity, payload) => {
       try {
         return unWrap(await fetch(`https://${algoliaConfig.appId}-dsn.algolia.net/1/indexes/users/${identity.id}`, {
@@ -17,7 +23,7 @@ export default (algoliaConfig) => {
       }
     },
 
-    betById: async (identity) => {
+    getById: async (identity) => {
       try {
         return unWrap(await fetch(`https://${algoliaConfig.appId}-dsn.algolia.net/1/indexes/users/${identity.id}`, {
           headers,
